@@ -47,7 +47,7 @@ class MyHomePage extends StatefulWidget {
 
 // esta parte hace que al presionar el boton +, valla incrementando el contador
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  int _counter = 0; // contador
 
   void _incrementCounter() {
     setState(() {
@@ -62,33 +62,18 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          children: <Widget>[
-            new ListTile(
-              leading:
-                  const Icon(Icons.phone_android), // agrega el icono de android
-              title: const Text('Android'), // pone el texto de android
-            ),
-            new ListTile(
-              leading:
-                  const Icon(Icons.phone_iphone), // agrega el icono de Iphone
-              title: const Text('Iphone (IOS)'), // agrega el texto de IOS
-            )
-          ],
-        ),
+      // hace que al presionar el boton de + este envie texto con un icono.
+      body: new ListView.builder(
+        itemCount: _counter,
+        itemBuilder: (context, index) {
+          return ListTile(
+              leading: const Icon(Icons.account_circle), // incono del texto
+              title: Text('Name of item')); // texto
+        },
       ),
 
       floatingActionButton: FloatingActionButton(
