@@ -85,7 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
             new ListTile(
               leading:
                   const Icon(Icons.phone_iphone), // agrega el icono de Iphone
-              title: const Text('IOS'), // agrega el texto de IOS
+              title: const Text('Iphone (IOS)'), // agrega el texto de IOS
             )
           ],
         ),
