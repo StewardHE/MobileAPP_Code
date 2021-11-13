@@ -71,8 +71,15 @@ class _MyHomePageState extends State<MyHomePage> {
         itemCount: _counter,
         itemBuilder: (context, index) {
           return ListTile(
-              leading: const Icon(Icons.account_circle), // incono del texto
-              title: Text('Name of item')); // texto
+            leading: const Icon(Icons.book), // incono del texto
+            title: Text('Name of item'), // texto
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SecondPage()),
+              );
+            },
+          );
         },
       ),
 
@@ -81,6 +88,29 @@ class _MyHomePageState extends State<MyHomePage> {
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+
+// codigo para hacer que al tocar uno de los
+// mensajes devuelva una nueva pagina con un
+// boton de volver ala pagina principal
+
+class SecondPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Second screen'),
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Text('Go back!'),
+        ),
+      ),
     );
   }
 }
