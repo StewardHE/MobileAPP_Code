@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'dart:async';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+// import 'package:http/http.dart';
 
 void main() {
   runApp(MyApp());
@@ -21,14 +26,58 @@ class MyApp extends StatelessWidget {
           // Notice that the counter didn't reset back to zero; the application
           // is not restarted.
           primarySwatch: Colors.lightBlue), // color de la app
-      home: MyHomePage(
-          title: 'This is my first App'), // nombre principal de la app
+      home:
+          MyHomePage(title: 'This is my first App', storage: CounterStorage()),
     );
   }
 }
 
+//
+//class GetData {
+//  Future<http.Response> fetchData(http.Client client) async {
+//    return client.get('https://www.google.com/');
+//  }
+// }
+
+// esto es para que guarde los objetos en la memoria del celular y que lea si el usuario ya ha creado objetos
+class CounterStorage {
+  Future<String> get _localPath async {
+    final directory = await getApplicationDocumentsDirectory();
+
+    return directory.path;
+  }
+
+  Future<File> get _localpath async {
+    final path = await _localpath;
+    return File('$path/counter.txt');
+  }
+
+  Future<int> readCounter() async {
+    try {
+      final file = await _localFile;
+
+      String contents = await file.readAsString();
+
+      return int.parse(contents);
+    } catch (e) {
+      // if no data return 0 for the counter
+      return 0;
+    }
+  }
+
+  Future<File> writeCounter(int counter) async {
+    final file = await _localFile;
+
+    return file.writeAssString('$counter');
+  }
+}
+
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
+  final String title;
+  final CounterStorage storage;
+
+  MyHomePage({Key? key, @required this.title, @required this.storage})
+      : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -39,8 +88,6 @@ class MyHomePage extends StatefulWidget {
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
 
-  final String title;
-
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -49,15 +96,22 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0; // contador
 
-  void _incrementCounter() {
+  @override
+  void initState() {
+    super.initState();
+    widget.storage.readCounter().then((int value) {
+      setState(() {
+        _counter = value;
+      });
+    });
+  }
+
+  Future<File> _incrementCounter() async {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
       _counter++;
     });
+
+    return widget.storage.writeCounter(_counter);
   }
 
   @override
